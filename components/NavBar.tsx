@@ -1,10 +1,13 @@
-import Link from "next/link";
-import React from "react";
+import Link from "next/link"
+import React from "react"
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react"
 
 export default function NavBar() {
-    const [open, setOpen] = React.useState(false);
-    const classNameForMenu = open ? "navbar-menu is-active" : "navbar-menu";
+    const [open, setOpen] = React.useState(false)
+    const classNameForMenu = open ? "navbar-menu is-active" : "navbar-menu"
 
+    const authSession = useSession()
+    const supabaseClient = useSupabaseClient()
     const LinkClosingMenu = (props: any) => {
         return (
             <Link {...props} onClick={() => setOpen(false)}>
@@ -12,6 +15,11 @@ export default function NavBar() {
             </Link>
         );
     }
+
+    const handleLogOut = async () => {
+        await supabaseClient.auth.signOut()
+    }
+
 
     return (
         <nav className="navbar" role="navigation" aria-label="main navigation">
@@ -62,12 +70,17 @@ export default function NavBar() {
                 <div className="navbar-end">
                     <div className="navbar-item">
                         <div className="buttons">
-                            <a className="button is-primary">
-                                <strong>Sign up</strong>
-                            </a>
-                            <a className="button is-light">
-                                Log in
-                            </a>
+                            <LinkClosingMenu className="button is-primary" href="/profile">
+                                {authSession?.user ? authSession.user.email : "Not logged in"}
+                            </LinkClosingMenu>
+                            { authSession?.user ?
+                                <a className="button is-light" onClick={handleLogOut}>
+                                    Log out
+                                </a> :
+                                <LinkClosingMenu className="button is-light" href="/auth">
+                                    Log in
+                                </LinkClosingMenu>
+                            }
                         </div>
                     </div>
                 </div>
