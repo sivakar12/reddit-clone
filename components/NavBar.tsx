@@ -40,8 +40,8 @@ export default function NavBar() {
         
             <div id="navbarBasicExample" className={classNameForMenu}>
                 <div className="navbar-start">
-                    <LinkClosingMenu className="navbar-item" href="/groups" onClick={() => setOpen(false)}>
-                        Groups
+                    <LinkClosingMenu className="navbar-item" href="/subreddits" onClick={() => setOpen(false)}>
+                        Subreddits
                     </LinkClosingMenu>
                     <LinkClosingMenu className="navbar-item" href="/inbox" onClick>
                         Inbox
